@@ -1,0 +1,468 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Nunito', sans-serif;
+}
+
+:root {
+    --bg-color: #312a5b; 
+    --text-color: #ffffff; 
+    --accent-color: #4a3e85; 
+    --light-bg: #f8f9fa; 
+    --light-purple: #f0eefc; 
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    scroll-behavior: smooth; 
+    overflow-x: hidden; /* Evita rolagem horizontal indesejada nas animações */
+}
+
+/* =========================================
+   ANIMAÇÕES (NOVAS CLASSES)
+   ========================================= */
+.fade-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-up.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animação com delay para itens em sequência (como os cards) */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+
+/* =========================================
+   CABEÇALHO E NAVEGAÇÃO
+   ========================================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 50px;
+    background-color: var(--bg-color);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.4s ease; /* Transição suave para o scroll */
+}
+
+/* Estado da Navbar quando a página rola */
+.navbar.scrolled {
+    padding: 10px 50px;
+    background-color: rgba(49, 42, 91, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    border-bottom: none;
+}
+
+.logo-img {
+    height: 50px; /* Voltamos para o tamanho original para não esticar a navbar */
+    width: auto;
+    object-fit: contain;
+    
+    /* O TRUQUE AQUI: Aumenta a imagem visualmente em 1.8x (80%) */
+    transform: scale(2.8); 
+    
+    /* Faz a imagem crescer para a direita e para cima/baixo, mantendo-a alinhada à esquerda */
+    transform-origin: left center; 
+    
+    transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+    /* No hover, ela cresce um pouquinho mais em relação ao scale original */
+    transform: scale(1.9); 
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: var(--text-color);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+/* Sublinhado animado nos links do menu */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: #d1cbf5;
+    transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+    width: 100%;
+}
+
+.nav-links a:hover {
+    color: #d1cbf5;
+}
+
+/* =========================================
+   HERO E BOTÕES
+   ========================================= */
+.hero {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative; /* Adicionado */
+    z-index: 1; /* Garante que o texto e os botões fiquem clicáveis por cima */
+}
+.hero::before {
+    content: ""; /* Necessário para o ::before funcionar */
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    /* Configurações da sua imagem */
+    background-image: url('logocorreta.png'); 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    background-size: 50%; 
+    
+    /* AQUI sim a opacidade afeta só a imagem! */
+    opacity: 0.1; 
+    
+    /* Joga essa camada lá pro fundo, atrás do texto */
+    z-index: -1; 
+}
+
+.hero-content h2 {
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    font-weight: 800;
+    line-height: 1.1;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #d1cbf5;
+}
+
+.btn-primary {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    padding: 15px 35px;
+    text-decoration: none;
+    font-weight: 800;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    display: inline-block;
+}
+
+.btn-primary:hover {
+    background-color: #e0e0e0;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn-whatsapp {
+    display: block;
+    margin-top: 20px;
+    background-color: #25D366; 
+    color: white;
+    padding: 12px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-whatsapp:hover {
+    background-color: #1ebe5d;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(37, 211, 102, 0.3);
+}
+
+/* =========================================
+   SEÇÕES DE CATÁLOGO E CARDS
+   ========================================= */
+.servicos-section {
+    padding: 80px 20px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+.bg-light-purple {
+    background-color: var(--light-purple); 
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: 800;
+}
+
+.catalogo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.servico-card {
+    background-color: var(--text-color);
+    border-radius: 20px;
+    padding: 30px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(49, 42, 91, 0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease; /* Transições mais suaves */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; 
+}
+
+.servico-card:hover {
+    transform: translateY(-10px); /* O card sobe um pouco mais */
+    box-shadow: 0 20px 40px rgba(49, 42, 91, 0.15);
+}
+
+.servico-icone {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease;
+}
+
+.servico-card:hover .servico-icone {
+    transform: scale(1.1); /* Ícone cresce levemente no hover do card */
+}
+
+.servico-card h3 {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    color: var(--accent-color);
+}
+
+.servico-card p {
+    font-size: 0.95rem;
+    color: #555;
+    flex-grow: 1; 
+}
+
+.servico-preco {
+    display: inline-block;
+    margin-top: 15px;
+    font-weight: 800;
+    color: var(--bg-color);
+    background-color: #e0dcfc;
+    padding: 8px 15px;
+    border-radius: 15px;
+}
+
+/* =========================================
+   HISTÓRIA E CONTATO
+   ========================================= */
+.historia-section {
+    padding: 80px 20px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    text-align: center;
+}
+
+.historia-content {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 40px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.historia-content:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+}
+
+.historia-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: #d1cbf5;
+}
+.historia-content p {
+    text-align: justify;
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+.contato-section {
+    padding: 80px 20px;
+    background-color: var(--light-bg); 
+    color: var(--bg-color); 
+}
+
+.contato-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 40px;
+    max-width: 900px;
+    margin: 0 auto 40px;
+}
+
+.contato-card {
+    background-color: var(--text-color); 
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(49, 42, 91, 0.08);
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.contato-card:hover {
+    transform: translateY(-5px);
+}
+
+.contato-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: var(--accent-color);
+}
+
+.destaque-entrega {
+    margin-top: 15px;
+    font-weight: 900 !important;
+    color: #25D366;
+    font-size: 1.2rem !important;
+}
+
+.mapa-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(49, 42, 91, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.mapa-container:hover {
+    transform: scale(1.01);
+}
+
+footer {
+    text-align: center;
+    padding: 25px;
+    background-color: #211c3d; 
+    color: #a39ebf;
+    font-size: 0.9rem;
+}
+/* =========================================
+   BOTÃO MENU MOBILE (Escondido no PC)
+   ========================================= */
+.menu-toggle {
+    display: none; /* Esconde no computador */
+    flex-direction: column;
+    cursor: pointer;
+    gap: 6px;
+    z-index: 1001; /* Fica acima do menu aberto */
+}
+
+.menu-toggle .bar {
+    width: 30px;
+    height: 3px;
+    background-color: var(--text-color);
+    transition: all 0.3s ease;
+    border-radius: 3px;
+}
+
+/* =========================================
+   RESPONSIVIDADE (Telas menores que 768px)
+   ========================================= */
+@media (max-width: 768px) {
+    /* 1. Ajustes da Navbar e Menu */
+    .navbar {
+        padding: 15px 20px; /* Reduz o espaçamento lateral no topo */
+    }
+
+    .menu-toggle {
+        display: flex; /* Mostra o hambúrguer no celular */
+    }
+
+    .nav-links {
+        position: absolute;
+        top: 100%; /* Fica logo abaixo da navbar */
+        left: -100%; /* Esconde o menu fora da tela à esquerda */
+        width: 100%;
+        background-color: rgba(49, 42, 91, 0.98); /* Fundo roxo escuro quase sólido */
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: center;
+        padding: 20px 0;
+        transition: left 0.4s ease; /* Animação de deslizar */
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Classe que o JavaScript vai adicionar para mostrar o menu */
+    .nav-links.active {
+        left: 0; 
+    }
+
+    .nav-links li {
+        margin: 15px 0;
+    }
+
+    /* 2. Ajustes de Tipografia (Tamanhos de fonte) */
+    .hero-content h2 {
+        font-size: 2.2rem; /* Título principal menor */
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .section-header h2 {
+        font-size: 2rem; /* Títulos das seções menores */
+    }
+
+    /* 3. Ajustes de Espaçamento das Seções */
+    .servicos-section, 
+    .historia-section, 
+    .contato-section, 
+    .hero {
+        padding: 50px 20px; /* Menos espaço sobrando nas bordas */
+    }
+
+    /* Garante que o iframe do mapa não quebre a tela */
+    .mapa-container iframe {
+        height: 300px; 
+    }
+}
