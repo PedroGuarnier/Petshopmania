@@ -17,7 +17,7 @@ const servicosPetShop = [
         id: 3,
         nome: "Entrega em Domicílio",
         descricao: "Comodidade para você! Entregamos produtos, rações e medicamentos diretamente na sua casa.",
-        preco: "🏍 Entregamos",
+        preco: "Entregamos",
         icone: "📦"
     }
 ];
@@ -43,20 +43,19 @@ const numeroWhatsApp = "5521964168522";
 
 function renderizarConteudo() {
     const containerServicos = document.getElementById('catalogo-container');
-    const containerProdutos = document.getElementById('produtos-container'); 
-    
-    if(containerServicos) containerServicos.innerHTML = '';
-    if(containerProdutos) containerProdutos.innerHTML = '';
+    const containerProdutos = document.getElementById('produtos-container');
 
-    if(containerServicos) {
+    if (containerServicos) containerServicos.innerHTML = '';
+    if (containerProdutos) containerProdutos.innerHTML = '';
+
+    if (containerServicos) {
         servicosPetShop.forEach((servico, index) => {
             const mensagem = encodeURIComponent(`Olá! Gostaria de informações sobre o serviço de *${servico.nome}*.`);
             const linkWhats = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
 
             const card = document.createElement('div');
-            // Adicionando as classes de animação dinâmica e um delay baseado na posição
             card.classList.add('servico-card', 'fade-up', `delay-${index + 1}`);
-            
+
             card.innerHTML = `
                 <div class="servico-icone">${servico.icone}</div>
                 <h3>${servico.nome}</h3>
@@ -68,15 +67,14 @@ function renderizarConteudo() {
         });
     }
 
-    if(containerProdutos) {
+    if (containerProdutos) {
         produtosPet.forEach((item, index) => {
             const mensagem = encodeURIComponent(`Olá! Gostaria de consultar a disponibilidade/preço do item: *${item.nome}*.`);
             const linkWhats = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
 
             const card = document.createElement('div');
-            // Adicionando as classes de animação dinâmica
-            card.classList.add('servico-card', 'fade-up', `delay-${index + 1}`); 
-            
+            card.classList.add('servico-card', 'fade-up', `delay-${index + 1}`);
+
             card.innerHTML = `
                 <div class="servico-icone">${item.icone}</div>
                 <h3>${item.nome}</h3>
@@ -88,7 +86,6 @@ function renderizarConteudo() {
         });
     }
 
-    // Após renderizar os cards, inicia a observação das animações
     iniciarAnimacoes();
 }
 
@@ -97,52 +94,89 @@ function renderizarConteudo() {
 // =========================================
 
 function iniciarAnimacoes() {
-    // 1. Efeito do Navbar ao rolar a página
     const navbar = document.getElementById('navbar');
+    const backToTop = document.getElementById('backToTop');
+
+    // 1. Navbar scroll effect + Back to Top visibility
     window.addEventListener('scroll', () => {
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+
+        // Show/hide back to top button
+        if (backToTop) {
+            if (window.scrollY > 400) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+        }
     });
 
-    // 2. Intersection Observer para o Fade-up das seções e cards
+    // 2. Back to Top click
+    if (backToTop) {
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // 3. Intersection Observer for fade-up animations
     const elementosAnimados = document.querySelectorAll('.fade-up');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('show');
-                // Opcional: Descomente a linha abaixo se quiser que a animação ocorra apenas 1 vez
-                // observer.unobserve(entry.target); 
             }
         });
     }, {
-        threshold: 0.15 // Dispara quando 15% do elemento estiver visível na tela
+        threshold: 0.12
     });
 
     elementosAnimados.forEach(elemento => {
         observer.observe(elemento);
     });
-    // ... código do observer que já estava aí ...
 
-    // 3. Lógica do Menu Mobile (Menu Hambúrguer)
+    // 4. Mobile menu toggle with animation
     const mobileMenu = document.getElementById('mobile-menu');
     const navLinks = document.getElementById('nav-links');
     const navItems = document.querySelectorAll('.nav-links a');
 
-    // Abre/fecha o menu ao clicar no ícone
     if (mobileMenu) {
         mobileMenu.addEventListener('click', () => {
             navLinks.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
         });
     }
 
-    // Fecha o menu automaticamente quando clica em algum link
+    // Close menu on link click
     navItems.forEach(item => {
         item.addEventListener('click', () => {
             navLinks.classList.remove('active');
+            if (mobileMenu) mobileMenu.classList.remove('active');
+        });
+    });
+
+    // 5. Active nav link highlighting on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinksAll = document.querySelectorAll('.nav-links a');
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - 120;
+            if (window.scrollY >= sectionTop) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinksAll.forEach(link => {
+            link.style.color = '';
+            if (link.getAttribute('href') === `#${current}`) {
+                link.style.color = '#a594f9';
+            }
         });
     });
 }
